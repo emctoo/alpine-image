@@ -2,7 +2,7 @@ SHELL=/bin/bash
 .PRECIOUS: packer/alpine/virt/%/packer-alpine packer/alpine/lts/%/packer-alpine
 
 arch?=x86_64
-version?=3.12.0
+version?=3.15.0
 ver:=$(basename $(version))
 mirror?=https://mirrors.aliyun.com/alpine
 

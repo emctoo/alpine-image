@@ -2,7 +2,7 @@ variable "mirror" {
   default = "https://mirrors.aliyun.com/alpine"
 }
 variable "version" {
-  default = "3.12.0"
+  default = "3.15.0"
 }
 variable "flavor" {
   default = "virt"
@@ -31,7 +31,7 @@ variable "dist" {
 locals {
   ver = regex_replace(var.version, "[.][0-9]+$", "")
   checksums = {
-    "alpine-virt-3.12.0-x86_64.iso": "sha256:fe694a34c0e2d30b9e5dea7e2c1a3892c1f14cb474b69cc5c557a52970071da5"
+    "alpine-virt-3.15.0-x86_64.iso": "sha256:e97eaedb3bff39a081d1d7e67629d5c0e8fb39677d6a9dd1eaf2752e39061e02"
   }
 }
 
