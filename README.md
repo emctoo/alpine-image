@@ -79,6 +79,19 @@ sudo dd if=${file%%.gz} of=/dev/sdb status=progress bs=64M
 # now you can boot from the external storage
 ```
 
+use `virt-install`: 
+
+```sh
+sudo cp images/virt/alpine.qcow2 /var/lib/libvirt/images/alpine-3.15.0.qcow2
+sudo virt-install --virt-type kvm --name v44 \
+  --os-type linux --os-variant alpinelinux3.15 \
+  --memory 1024 \
+  --disk /var/lib/libvirt/images/alpine-3.15.0.qcow2 \
+  --graphic none \
+  --network network=default,model=virtio \
+  --import
+```
+
 ## Images
 
 - alpine-$FLAVOR-$VERSION-$ARCH.img
