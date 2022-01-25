@@ -9,7 +9,7 @@ variable "flavor" {
 }
 
 variable "size" {
-  default = "40G"
+  default = "20G"
 }
 variable "format" {
   default = "qcow2"
@@ -26,6 +26,26 @@ variable "boot_wait" {
 }
 variable "dist" {
   default = ""
+}
+
+variable "interfaces_conf" {
+  default = <<EOF
+auto lo
+iface lo inet loopback
+
+auto eth0
+# iface eth0 inet dhcp
+iface eth0 inet static
+  address 192.168.8.144/24
+  gateway 192.168.8.1
+EOF
+}
+
+variable "resolv_conf" {
+  default = <<EOF
+nameserver 192.168.8.145
+search myctl.space
+EOF
 }
 
 locals {
@@ -50,6 +70,8 @@ source "qemu" "alpine" {
   boot_command = [
     "root<enter>",
     "setup-interfaces -a<enter>",
+    // "cat ${var.interfaces_conf} > /etc/network/interfaces<enter>",
+    // "cat ${var.resolv_conf} > /etc/resolv.conf<enter>",
     "service networking restart<enter>",
     "echo root:root | chpasswd<enter><wait5>",
     "setup-sshd -c openssh<enter>",
@@ -67,7 +89,12 @@ build {
   source "qemu.alpine" {}
 
   provisioner "shell" {
+    scripts = [
+      "scripts/confs.sh",
+    ]
+  }
 
+  provisioner "shell" {
     inline = [
 <<-EOF
 : $${ALPINE_MIRROR:=https://mirrors.aliyun.com/alpine}
@@ -78,6 +105,7 @@ echo $${ALPINE_MIRROR}/v$${ALPINE_VER}/main > /etc/apk/repositories
 echo $${ALPINE_MIRROR}/v$${ALPINE_VER}/community >> /etc/apk/repositories
 rc-update add networking
 ERASE_DISKS=/dev/vda setup-disk -m sys -s 0 -k $${ALPINE_FLAVOR} /dev/vda
+echo "build done+"
 EOF
     ]
     environment_vars = [

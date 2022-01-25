@@ -4,7 +4,7 @@ SHELL=/bin/bash
 arch?=x86_64
 version?=3.15.0
 ver:=$(basename $(version))
-mirror?=https://mirrors.aliyun.com/alpine
+mirror?=https://mirrors.tuna.tsinghua.edu.cn/alpine
 
 flavor?=virt
 format?=raw
@@ -111,6 +111,7 @@ packer/alpine/virt/%/packer-alpine:
 images/virt/alpine.%: packer/alpine/virt/%/packer-alpine
 	mkdir -p images/virt
 	cp $^ images/virt/alpine.$*
+	sudo cp images/virt/alpine.$* /var/lib/libvirt/images/alpine-3.15.0.qcow2
 
 packer/alpine/lts/%/packer-alpine:
 	PACKER_LOG=$(verbose) packer build $(PACKER_FLAGS) \

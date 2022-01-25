@@ -90,6 +90,8 @@ sudo virt-install --virt-type kvm --name v44 \
   --graphic none \
   --network network=default,model=virtio \
   --import
+
+# macvtap network: --network type=direct,source=enp6s0f0,source_mode=bridge,model=virtio
 ```
 
 ## Images
